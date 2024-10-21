@@ -65,5 +65,30 @@ class StatTracker
     win_percent = (away_wins.to_f / games_played.to_f) * 100
     win_percent.round(2)
   end
+  
+  def tie_percent
+    games_played = @games.length
+    ties = 0
+    
+    @games.each do |game|
+      if game[:home_goals].to_i == game[:away_goals].to_i
+        ties += 1
+      end
+    end
+    win_percent = (ties.to_f / games_played.to_f) * 100
+    win_percent.round(2)
+  end
 
+  def count_of_games_by_season
+    seasons = Hash.new
+    @games.each do |game|
+      season = game[:season]
+      if seasons[season]
+        seasons[season] += 1
+      else
+        seasons[season] = 1
+      end
+    end
+    seasons
+  end
 end

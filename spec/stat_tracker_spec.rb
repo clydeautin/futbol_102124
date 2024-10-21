@@ -67,4 +67,27 @@ RSpec.describe 'Stat Tracker' do
 
     expect(stat_tracker_f.away_team_win_percent).to eq(26.67)
   end
+
+  it 'will return the perecentage of games that has resulted in a tie' do
+    locations = {
+      games: './spec/fixtures/g_fixture.csv',
+      teams: './spec/fixtures/t_fixture.csv',
+      game_teams: './spec/fixtures/gt_fixture.csv'
+    }
+    stat_tracker_f = StatTracker.from_csv(locations)
+
+    expect(stat_tracker_f.tie_percent).to eq(3.33)
+  end
+
+  it 'will return a hash with season names as keys and counts of games as values' do
+    locations = {
+      games: './spec/fixtures/g_fixture.csv',
+      teams: './spec/fixtures/t_fixture.csv',
+      game_teams: './spec/fixtures/gt_fixture.csv'
+    }
+    stat_tracker_f = StatTracker.from_csv(locations)
+
+    expect(stat_tracker_f.count_of_games_by_season).to be_a(Hash)
+    expect(stat_tracker_f.count_of_games_by_season.keys).to eq(["20122013"])
+  end
 end
