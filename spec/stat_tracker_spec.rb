@@ -90,4 +90,29 @@ RSpec.describe 'Stat Tracker' do
     expect(stat_tracker_f.count_of_games_by_season).to be_a(Hash)
     expect(stat_tracker_f.count_of_games_by_season.keys).to eq(["20122013"])
   end
+  
+  it 'will return average goals per game' do
+    locations = {
+      games: './spec/fixtures/g_fixture.csv',
+      teams: './spec/fixtures/t_fixture.csv',
+      game_teams: './spec/fixtures/gt_fixture.csv'
+    }
+    stat_tracker_f = StatTracker.from_csv(locations)
+    
+    expect(stat_tracker_f.average_goals_per_game).to eq(3.73)
+    
+  end
+  
+  it 'will return average goals per season' do
+    locations = {
+      games: './data/games.csv',
+      teams: './spec/fixtures/t_fixture.csv',
+      game_teams: './spec/fixtures/gt_fixture.csv'
+    }
+    stat_tracker_f = StatTracker.from_csv(locations)
+    
+    expect(stat_tracker_f.average_goals_by_season).to be_a(Hash)
+    expect(stat_tracker_f.average_goals_by_season.keys).to include("20122013")
+    require 'pry'; binding.pry
+  end
 end
