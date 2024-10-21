@@ -34,4 +34,15 @@ RSpec.describe 'Stat Tracker' do
 
     expect(stat_tracker_f.highest_total_score).to eq(5)
   end
+
+  it 'will return the lowest total score' do
+    locations = {
+      games: './spec/fixtures/g_fixture.csv',
+      teams: './spec/fixtures/t_fixture.csv',
+      game_teams: './spec/fixtures/gt_fixture.csv'
+    }
+    stat_tracker_f = StatTracker.from_csv(locations)
+
+    expect(stat_tracker_f.lowest_total_score).to eq(1)
+  end
 end

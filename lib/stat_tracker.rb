@@ -20,13 +20,24 @@ class StatTracker
 
   def highest_total_score
     high_score = 0
-    @games.map do |game|
+    @games.each do |game|
       game_score = game[:home_goals].to_i + game[:away_goals].to_i
       if game_score > high_score
         high_score = game_score
       end
     end
     high_score
+  end
+
+  def lowest_total_score
+    low_score = Float::INFINITY
+    @games.each do |game|
+      game_score = game[:home_goals].to_i + game[:away_goals].to_i
+      if game_score < low_score
+        low_score = game_score
+      end
+    end
+    low_score
   end
 
 end
