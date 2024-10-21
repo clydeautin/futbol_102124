@@ -12,4 +12,26 @@ RSpec.describe 'Stat Tracker' do
 
     expect(stat_tracker).to be_a(StatTracker)
   end
+
+  it 'will load fixture files' do
+    locations = {
+      games: './spec/fixtures/g_fixture.csv',
+      teams: './spec/fixtures/t_fixture.csv',
+      game_teams: './spec/fixtures/gt_fixture.csv'
+    }
+    stat_tracker_f = StatTracker.from_csv(locations)
+
+    expect(stat_tracker_f).to be_a(StatTracker)
+  end
+
+  it 'will return the highest total score' do
+    locations = {
+      games: './spec/fixtures/g_fixture.csv',
+      teams: './spec/fixtures/t_fixture.csv',
+      game_teams: './spec/fixtures/gt_fixture.csv'
+    }
+    stat_tracker_f = StatTracker.from_csv(locations)
+
+    expect(stat_tracker_f.highest_total_score).to eq(5)
+  end
 end

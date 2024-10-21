@@ -1,6 +1,5 @@
 require 'csv'
 
-
 class StatTracker
 
   attr_reader :games, :teams, :game_teams
@@ -18,4 +17,16 @@ class StatTracker
 
     StatTracker.new(games, teams, game_teams)
   end
+
+  def highest_total_score
+    high_score = 0
+    @games.map do |game|
+      game_score = game[:home_goals].to_i + game[:away_goals].to_i
+      if game_score > high_score
+        high_score = game_score
+      end
+    end
+    high_score
+  end
+
 end
