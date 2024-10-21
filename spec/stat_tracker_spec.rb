@@ -45,4 +45,26 @@ RSpec.describe 'Stat Tracker' do
 
     expect(stat_tracker_f.lowest_total_score).to eq(1)
   end
+
+  it 'will return the perecentage of games that a home team has won' do
+    locations = {
+      games: './spec/fixtures/g_fixture.csv',
+      teams: './spec/fixtures/t_fixture.csv',
+      game_teams: './spec/fixtures/gt_fixture.csv'
+    }
+    stat_tracker_f = StatTracker.from_csv(locations)
+
+    expect(stat_tracker_f.home_team_win_percent).to eq(70.00)
+  end
+
+  it 'will return the perecentage of games that an away team has won' do
+    locations = {
+      games: './spec/fixtures/g_fixture.csv',
+      teams: './spec/fixtures/t_fixture.csv',
+      game_teams: './spec/fixtures/gt_fixture.csv'
+    }
+    stat_tracker_f = StatTracker.from_csv(locations)
+
+    expect(stat_tracker_f.away_team_win_percent).to eq(26.67)
+  end
 end

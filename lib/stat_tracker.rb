@@ -40,4 +40,30 @@ class StatTracker
     low_score
   end
 
+  def home_team_win_percent
+    games_played = @games.length
+    home_wins = 0
+
+    @games.each do |game|
+      if game[:home_goals].to_i > game[:away_goals].to_i
+        home_wins += 1
+      end
+    end
+    win_percent = (home_wins.to_f / games_played.to_f) * 100
+    win_percent.round(2)
+  end
+  
+  def away_team_win_percent
+    games_played = @games.length
+    away_wins = 0
+    
+    @games.each do |game|
+      if game[:home_goals].to_i < game[:away_goals].to_i
+        away_wins += 1
+      end
+    end
+    win_percent = (away_wins.to_f / games_played.to_f) * 100
+    win_percent.round(2)
+  end
+
 end
