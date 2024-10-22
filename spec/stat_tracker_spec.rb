@@ -152,7 +152,30 @@ RSpec.describe 'Stat Tracker' do
 
       expect(stat_tracker_f.worst_offense).to_not eq('FC Dallas')
       expect(stat_tracker_f.worst_offense).to eq('New England Revolution')
-
+      
+    end
+    
+    it 'can return worst highest scoring visitor' do
+      locations = {
+        games: './spec/fixtures/g_fixture.csv',
+        teams: './spec/fixtures/t_fixture.csv',
+        game_teams: './spec/fixtures/gt_fixture.csv'
+      }
+      stat_tracker_f = StatTracker.from_csv(locations)
+      
+      expect(stat_tracker_f.highest_scoring_visitor).to eq('FC Dallas')
+    end
+    
+    it 'can return worst highest scoring visitor' do
+      locations = {
+        games: './spec/fixtures/g_fixture.csv',
+        teams: './spec/fixtures/t_fixture.csv',
+        game_teams: './spec/fixtures/gt_fixture.csv'
+      }
+      stat_tracker_f = StatTracker.from_csv(locations)
+      
+      expect(stat_tracker_f.lowest_scoring_visitor).to_not eq('FC Dallas')
+      expect(stat_tracker_f.worst_offense).to eq('New England Revolution')
     end
   end
 end
