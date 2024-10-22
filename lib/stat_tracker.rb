@@ -139,4 +139,59 @@ class StatTracker
   def count_of_teams
     @teams.length
   end
+
+  def best_offense #best off of all time
+    #highest avg number of goals per game
+    #across all seasons
+    # might still work with gt file
+    # Create new Hash
+    # loop through gt file
+    # for each team we encounter, store goals and gamesplayed increase by 1
+    # then loop through this new array and figure out the average goals scored per team
+    # return the max
+    # match game ID with team name
+
+    teams = Hash.new { |hash, key| hash[key] = { games_played: 0, goals_scored: 0 } }
+
+    @game_teams.each do |game_team|
+      team_id = game_team[:team_id]
+      
+      teams[team_id][:games_played] += 1
+      teams[team_id][:goals_scored] += game_team[:goals].to_i
+    end
+    teams.each do |team_id, values|
+      teams[team_id] = (values[:goals_scored].to_f / values[:games_played].to_f).round(2)
+    end
+
+    desired_team_id = teams.max[0]
+
+    @teams.find do |team|
+      if team[:team_id] == desired_team_id
+        return team[:teamname]
+      end
+    end
+  end
+
+  def worst_offense 
+
+    teams = Hash.new { |hash, key| hash[key] = { games_played: 0, goals_scored: 0 } }
+
+    @game_teams.each do |game_team|
+      team_id = game_team[:team_id]
+      
+      teams[team_id][:games_played] += 1
+      teams[team_id][:goals_scored] += game_team[:goals].to_i
+    end
+    teams.each do |team_id, values|
+      teams[team_id] = (values[:goals_scored].to_f / values[:games_played].to_f).round(2)
+    end
+
+    desired_team_id = teams.min[0]
+
+    @teams.find do |team|
+      if team[:team_id] == desired_team_id
+        return team[:teamname]
+      end
+    end
+  end
 end

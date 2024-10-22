@@ -129,5 +129,30 @@ RSpec.describe 'Stat Tracker' do
       expect(stat_tracker_f.count_of_teams).to eq(32)
 
     end
+
+    it 'can return best offense' do
+      locations = {
+        games: './spec/fixtures/g_fixture.csv',
+        teams: './spec/fixtures/t_fixture.csv',
+        game_teams: './spec/fixtures/gt_fixture.csv'
+      }
+      stat_tracker_f = StatTracker.from_csv(locations)
+
+      expect(stat_tracker_f.best_offense).to eq('FC Dallas')
+
+    end
+
+    it 'can return worst offense' do
+      locations = {
+        games: './spec/fixtures/g_fixture.csv',
+        teams: './spec/fixtures/t_fixture.csv',
+        game_teams: './spec/fixtures/gt_fixture.csv'
+      }
+      stat_tracker_f = StatTracker.from_csv(locations)
+
+      expect(stat_tracker_f.worst_offense).to_not eq('FC Dallas')
+      expect(stat_tracker_f.worst_offense).to eq('New England Revolution')
+
+    end
   end
 end
