@@ -124,27 +124,19 @@ class StatTracker
     ## for each season divide goals scored by games played
     ## return a hash with season name as key and average goal scored as the value
 
-
-
-    # games_played = 0
-    # goals_scored = 0
-    @games.each do |game|
+    @games.each do |game| #0(n)
       season = game[:season]
       total_score = game[:home_goals].to_i + game[:away_goals].to_i
 
-      if seasons[season]
-        seasons[season][:games_played] += 1
-        seasons[season][:goals_scored] += total_score
-      else
-        seasons[season]
-        seasons[season][:games_played] = 1
-        seasons[season][:goals_scored] = total_score
-      end
+      seasons[season][:games_played] += 1
+      seasons[season][:goals_scored] += total_score
     end
-    seasons.map do |season, values|
+    seasons.each do |season, values| #0(m)
       seasons[season] = (values[:goals_scored].to_f / values[:games_played].to_f).round(2)
     end
-    # require 'pry'; binding.pry
-    seasons
+  end
+
+  def count_of_teams
+    @teams.length
   end
 end
