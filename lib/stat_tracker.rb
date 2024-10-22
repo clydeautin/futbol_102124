@@ -244,4 +244,54 @@ class StatTracker
       end
     end
   end
+
+  def highest_scoring_home_team
+    visitor_teams = Hash.new { |hash, key| hash[key] = { games_played: 0, goals_scored: 0 } }
+
+    @game_teams.each do |game_team|
+      team_id = game_team[:team_id]
+
+      if game_team[:hoa] == "home"
+        visitor_teams[team_id][:games_played] += 1
+        visitor_teams[team_id][:goals_scored] += game_team[:goals].to_i
+      end
+    end
+
+    visitor_teams.each do |team_id, values|
+      visitor_teams[team_id] = (values[:goals_scored].to_f / values[:games_played].to_f).round(2)
+    end
+
+    desired_team_id = visitor_teams.max[0]
+
+    @teams.find do |team|
+      if team[:team_id] == desired_team_id
+        return team[:teamname]
+      end
+    end
+  end
+
+  def lowest_scoring_home_team
+    visitor_teams = Hash.new { |hash, key| hash[key] = { games_played: 0, goals_scored: 0 } }
+
+    @game_teams.each do |game_team|
+      team_id = game_team[:team_id]
+
+      if game_team[:hoa] == "home"
+        visitor_teams[team_id][:games_played] += 1
+        visitor_teams[team_id][:goals_scored] += game_team[:goals].to_i
+      end
+    end
+
+    visitor_teams.each do |team_id, values|
+      visitor_teams[team_id] = (values[:goals_scored].to_f / values[:games_played].to_f).round(2)
+    end
+
+    desired_team_id = visitor_teams.min[0]
+
+    @teams.find do |team|
+      if team[:team_id] == desired_team_id
+        return team[:teamname]
+      end
+    end
+  end
 end
