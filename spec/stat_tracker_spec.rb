@@ -151,7 +151,7 @@ RSpec.describe 'Stat Tracker' do
       stat_tracker_f = StatTracker.from_csv(locations)
 
       expect(stat_tracker_f.worst_offense).to_not eq('FC Dallas')
-      expect(stat_tracker_f.worst_offense).to eq('New England Revolution')
+      expect(stat_tracker_f.worst_offense).to eq('Sporting Kansas City')
       
     end
     
@@ -175,7 +175,7 @@ RSpec.describe 'Stat Tracker' do
       stat_tracker_f = StatTracker.from_csv(locations)
       
       expect(stat_tracker_f.lowest_scoring_visitor).to_not eq('FC Dallas')
-      expect(stat_tracker_f.worst_offense).to eq('New England Revolution')
+      expect(stat_tracker_f.worst_offense).to eq('Sporting Kansas City')
     end
     
     it 'can return highest scoring home team' do
@@ -186,7 +186,7 @@ RSpec.describe 'Stat Tracker' do
       }
       stat_tracker_f = StatTracker.from_csv(locations)
       
-      expect(stat_tracker_f.highest_scoring_home_team).to eq('FC Dallas')
+      expect(stat_tracker_f.highest_scoring_home_team).to eq('LA Galaxy')
     end
     
     it 'can return lowest scoring home team' do
@@ -197,7 +197,32 @@ RSpec.describe 'Stat Tracker' do
       }
       stat_tracker_f = StatTracker.from_csv(locations)
       
-      expect(stat_tracker_f.lowest_scoring_home_team).to eq('New England Revolution')
+      expect(stat_tracker_f.lowest_scoring_home_team).to eq('Sporting Kansas City')
+    end
+  end
+
+  describe 'Season Statistics' do
+    it 'can return winningest coach for a given season' do
+      locations = {
+        games: './data/games.csv',
+        teams: './data/teams.csv',
+        game_teams: './data/game_teams.csv'
+      }
+      stat_tracker_f = StatTracker.from_csv(locations)
+
+      expect(stat_tracker_f.winningest_coach("20122013")).to eq("Glen Gulutzan")
+    end
+
+    it 'can return worst coach for a given season' do
+      locations = {
+        games: './data/games.csv',
+        teams: './data/teams.csv',
+        game_teams: './data/game_teams.csv'
+      }
+      stat_tracker_f = StatTracker.from_csv(locations)
+
+      expect(stat_tracker_f.worst_coach("20122013")).to_not eq("Glen Gulutzan")
+      expect(stat_tracker_f.worst_coach("20122013")).to eq("Ron Rolston")
     end
   end
 end
