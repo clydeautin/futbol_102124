@@ -40,7 +40,7 @@ class StatTracker
     low_score
   end
 
-  def home_team_win_percent
+  def percentage_home_wins
     games_played = @games.length
     home_wins = 0
 
@@ -53,7 +53,7 @@ class StatTracker
     win_percent.round(2)
   end
   
-  def away_team_win_percent
+  def percentage_visitor_wins
     games_played = @games.length
     away_wins = 0
     
@@ -66,7 +66,7 @@ class StatTracker
     win_percent.round(2)
   end
   
-  def tie_percent
+  def percentage_ties
     games_played = @games.length
     ties = 0
     
@@ -107,23 +107,6 @@ class StatTracker
 
   def average_goals_by_season
     seasons = Hash.new { |hash, key| hash[key] = { games_played: 0, goals_scored: 0 } }
-    #no order for when we get season data
-    # every time we increment hit a season we need to increment
-    ## games played
-    ## goals scored
-    # {'20122013' => 3.3}
-    # we come across a game
-    # if the season already exists in our hash, 
-    ## we go into that season hash and increment games played by 1
-    ## goals scored += total score in that game
-    # if the season does not exist
-    ## create a new key with season id
-    ## save games played as 1
-    ## save goals scored as total score
-    # run another loop through each season
-    ## for each season divide goals scored by games played
-    ## return a hash with season name as key and average goal scored as the value
-
     @games.each do |game| #0(n)
       season = game[:season]
       total_score = game[:home_goals].to_i + game[:away_goals].to_i
@@ -411,11 +394,11 @@ class StatTracker
       end
     end
     shot_stats.each do |team, values|
-      shot_stats[team] = (values[:goals].to_f / values[:shots].to_f).round(2)
+      shot_stats[team] = (values[:goals].to_f / values[:shots].to_f)
     end
 
     desired_team_id = shot_stats.max_by { |key, value| value }.first
-    
+    # require 'pry'; binding.pry
     @teams.find do |team|
       if team[:team_id] == desired_team_id 
         return team[:teamname]
@@ -442,7 +425,7 @@ class StatTracker
       end
     end
     shot_stats.each do |team, values|
-      shot_stats[team] = (values[:goals].to_f / values[:shots].to_f).round(2)
+      shot_stats[team] = (values[:goals].to_f / values[:shots].to_f)
     end
 
     desired_team_id = shot_stats.min_by { |key, value| value }.first
@@ -462,15 +445,16 @@ class StatTracker
       if game[:season] == season_id
         games_this_season[game[:game_id]] = season_id
       end
-      @game_teams.each do |game_team|
-        g_id = game_team[:game_id]
-        t_id = game_team[:team_id]
-        if games_this_season[g_id]
-          tackle_stats[t_id][:tackles] += game_team[:tackles].to_i
-        end
-      end
     end
 
+    @game_teams.each do |game_team|
+      g_id = game_team[:game_id]
+      t_id = game_team[:team_id]
+      if games_this_season[g_id]
+        tackle_stats[t_id][:tackles] += game_team[:tackles].to_i
+      end
+    end
+    
     tackle_stats.each do |team, values|
       tackle_stats[team] = (values[:tackles])
     end
@@ -492,15 +476,16 @@ class StatTracker
       if game[:season] == season_id
         games_this_season[game[:game_id]] = season_id
       end
-      @game_teams.each do |game_team|
-        g_id = game_team[:game_id]
-        t_id = game_team[:team_id]
-        if games_this_season[g_id]
-          tackle_stats[t_id][:tackles] += game_team[:tackles].to_i
-        end
-      end
     end
 
+    @game_teams.each do |game_team|
+      g_id = game_team[:game_id]
+      t_id = game_team[:team_id]
+      if games_this_season[g_id]
+        tackle_stats[t_id][:tackles] += game_team[:tackles].to_i
+      end
+    end
+    
     tackle_stats.each do |team, values|
       tackle_stats[team] = (values[:tackles])
     end
