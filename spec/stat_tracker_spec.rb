@@ -246,5 +246,28 @@ RSpec.describe 'Stat Tracker' do
 
       expect(stat_tracker_f.least_accurate_team("20122013")).to eq("Sporting Kansas City")
     end
+
+    it 'can return the team with most tackles in a season' do
+      locations = {
+        games: './spec/fixtures/g_fixture.csv',
+        teams: './spec/fixtures/t_fixture.csv',
+        game_teams: './spec/fixtures/gt_fixture.csv'
+      }
+      stat_tracker_f = StatTracker.from_csv(locations)
+
+      expect(stat_tracker_f.most_tackles("20122013")).to eq("FC Dallas")
+    end
+
+    it 'can return the team with fewest tackles in a season' do
+      locations = {
+        games: './spec/fixtures/g_fixture.csv',
+        teams: './spec/fixtures/t_fixture.csv',
+        game_teams: './spec/fixtures/gt_fixture.csv'
+      }
+      stat_tracker_f = StatTracker.from_csv(locations)
+
+      expect(stat_tracker_f.fewest_tackles("20122013")).to eq("New England Revolution")
+      expect(stat_tracker_f.fewest_tackles("20122013")).to_not eq("Sporting Kansas City")
+    end
   end
 end
