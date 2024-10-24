@@ -224,5 +224,27 @@ RSpec.describe 'Stat Tracker' do
       expect(stat_tracker_f.worst_coach("20122013")).to_not eq("Glen Gulutzan")
       expect(stat_tracker_f.worst_coach("20122013")).to eq("Ron Rolston")
     end
+
+    it 'can return the most accurate team' do
+      locations = {
+        games: './spec/fixtures/g_fixture.csv',
+        teams: './spec/fixtures/t_fixture.csv',
+        game_teams: './spec/fixtures/gt_fixture.csv'
+      }
+      stat_tracker_f = StatTracker.from_csv(locations)
+
+      expect(stat_tracker_f.most_accurate_team("20122013")).to eq("FC Dallas")
+    end
+
+    it 'can return the least accurate team' do
+      locations = {
+        games: './spec/fixtures/g_fixture.csv',
+        teams: './spec/fixtures/t_fixture.csv',
+        game_teams: './spec/fixtures/gt_fixture.csv'
+      }
+      stat_tracker_f = StatTracker.from_csv(locations)
+
+      expect(stat_tracker_f.least_accurate_team("20122013")).to eq("Sporting Kansas City")
+    end
   end
 end

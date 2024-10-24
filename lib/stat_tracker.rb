@@ -375,9 +375,81 @@ class StatTracker
     # require 'pry'; binding.pry
     
     @game_teams.find do |game_team| # binary search would speed this up
-      # require 'pry'; binding.pry
       if game_team[:team_id] == desired_team_id 
         return game_team[:head_coach]
+      end
+    end
+  end
+
+  def most_accurate_team(season_id)
+    #input = Season ID
+    #output = name of team with the best shot to goal ratio
+    #shot and goal stats live on gt file while season id lives on g
+    #team name lives on team file and is linked by team_id
+    #have to go through gt to get shot data
+    # team_id => ratio
+    #problem is how do we then break that down by season
+    # track every game per team
+    # team id = { game_id, shot_ratio}
+    # then we go through the g file and if a g matches given season ID, team_id and a game_id w
+    # e store that game in new hash as it belongs to that season and that team
+
+    shot_stats = Hash.new { |hash, key| hash[key] = { shots: 0, goals: 0 } }
+    games_this_season = {}
+    
+    @games.each do |game|
+      if game[:season] == season_id
+        games_this_season[game[:game_id]] = season_id
+      end
+    end
+    @game_teams.each do |game_team|
+      g_id = game_team[:game_id]
+      t_id = game_team[:team_id]
+      if games_this_season[g_id]
+        shot_stats[t_id][:shots] += game_team[:shots].to_i
+        shot_stats[t_id][:goals] += game_team[:goals].to_i
+      end
+    end
+    shot_stats.each do |team, values|
+      shot_stats[team] = (values[:goals].to_f / values[:shots].to_f).round(2)
+    end
+
+    desired_team_id = shot_stats.max_by { |key, value| value }.first
+    
+    @teams.find do |team|
+      if team[:team_id] == desired_team_id 
+        return team[:teamname]
+      end
+    end
+  end
+
+  def least_accurate_team(season_id)
+
+    shot_stats = Hash.new { |hash, key| hash[key] = { shots: 0, goals: 0 } }
+    games_this_season = {}
+    
+    @games.each do |game|
+      if game[:season] == season_id
+        games_this_season[game[:game_id]] = season_id
+      end
+    end
+    @game_teams.each do |game_team|
+      g_id = game_team[:game_id]
+      t_id = game_team[:team_id]
+      if games_this_season[g_id]
+        shot_stats[t_id][:shots] += game_team[:shots].to_i
+        shot_stats[t_id][:goals] += game_team[:goals].to_i
+      end
+    end
+    shot_stats.each do |team, values|
+      shot_stats[team] = (values[:goals].to_f / values[:shots].to_f).round(2)
+    end
+
+    desired_team_id = shot_stats.min_by { |key, value| value }.first
+    
+    @teams.find do |team|
+      if team[:team_id] == desired_team_id 
+        return team[:teamname]
       end
     end
   end
